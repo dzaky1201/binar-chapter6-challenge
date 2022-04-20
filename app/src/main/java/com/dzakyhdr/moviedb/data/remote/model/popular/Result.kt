@@ -1,4 +1,4 @@
-package com.dzakyhdr.moviedb.data.model.popular
+package com.dzakyhdr.moviedb.data.remote.model.popular
 
 
 import com.google.gson.annotations.SerializedName

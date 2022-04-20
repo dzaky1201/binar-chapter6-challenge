@@ -3,10 +3,9 @@ package com.dzakyhdr.moviedb.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dzakyhdr.moviedb.data.model.popular.PopularResponse
-import com.dzakyhdr.moviedb.data.model.popular.Result
+import com.dzakyhdr.moviedb.data.remote.model.popular.PopularResponse
+import com.dzakyhdr.moviedb.data.remote.model.popular.Result
 import com.dzakyhdr.moviedb.network.ApiClient
-import com.dzakyhdr.moviedb.network.ApiService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

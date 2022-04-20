@@ -1,7 +1,7 @@
 package com.dzakyhdr.moviedb.network
 
-import com.dzakyhdr.moviedb.data.model.popular.PopularResponse
-import com.dzakyhdr.moviedb.data.model.popular.Result
+import com.dzakyhdr.moviedb.data.remote.model.popular.PopularResponse
+import com.dzakyhdr.moviedb.data.remote.model.popular.Result
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
