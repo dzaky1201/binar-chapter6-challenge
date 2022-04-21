@@ -127,10 +127,9 @@
                 android:id="@+id/edtAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textLongMessage"
                 android:lines="8"
-                android:maxLines="10"
-                android:minLines="6"
+                android:ems="10"
                 android:scrollbars="vertical" />
 
 
