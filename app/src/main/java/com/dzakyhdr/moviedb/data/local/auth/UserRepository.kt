@@ -28,6 +28,12 @@ class UserRepository(private val userDao: UserDao) {
         }
     }
 
+    suspend fun update(user: User){
+        withContext(Dispatchers.IO){
+            userDao.update(user)
+        }
+    }
+
     fun verifyLogin(email: String, password: String): User {
         return userDao.readLogin(email, password)
     }

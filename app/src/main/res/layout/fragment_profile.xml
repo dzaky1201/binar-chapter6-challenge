@@ -155,7 +155,7 @@
 
 
         <Button
-            android:id="@+id/btnRegister"
+            android:id="@+id/btnEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -170,9 +170,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Logout"
-            app:layout_constraintEnd_toEndOf="@+id/btnRegister"
-            app:layout_constraintStart_toStartOf="@+id/btnRegister"
-            app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+            app:layout_constraintEnd_toEndOf="@+id/btnEdit"
+            app:layout_constraintStart_toStartOf="@+id/btnEdit"
+            app:layout_constraintTop_toBottomOf="@+id/btnEdit" />
 
 
 
