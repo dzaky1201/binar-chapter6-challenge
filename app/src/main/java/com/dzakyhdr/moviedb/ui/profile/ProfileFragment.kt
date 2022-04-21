@@ -56,12 +56,15 @@ class ProfileFragment : Fragment() {
         }
 
         binding.ivBack.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.action_profileFragment_to_homeFragment)
         }
 
         binding.btnLogout.setOnClickListener {
             shared.clearUsername()
             findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+        }
+        binding.btnEdit.setOnClickListener {
+            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToUpdateProfileFragment(viewModel.sendDataToUpdate()))
         }
     }
 

@@ -62,5 +62,23 @@
             android:id="@+id/action_profileFragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:popUpTo="@id/main_nav" />
+        <action
+            android:id="@+id/action_profileFragment_to_updateProfileFragment"
+            app:destination="@id/updateProfileFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateProfileFragment"
+        android:name="com.dzakyhdr.moviedb.ui.profile.UpdateProfileFragment"
+        android:label="UpdateProfileFragment" >
+        <action
+            android:id="@+id/action_updateProfileFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/profileFragment" />
+        <argument
+            android:name="user"
+            app:argType="com.dzakyhdr.moviedb.data.local.auth.User" />
     </fragment>
 </navigation>

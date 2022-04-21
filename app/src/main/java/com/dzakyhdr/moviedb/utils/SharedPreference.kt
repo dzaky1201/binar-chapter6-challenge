@@ -13,6 +13,7 @@ class SharedPreference(context: Context) {
     fun saveKey(user: User) {
         val editor = sharedPreference.edit()
         editor.putString("email", user.email)
+        editor.putInt("id", user.id)
         editor.putString("password", user.password)
         editor.putString("address", user.address)
         editor.putString("fullname", user.fullname)
@@ -31,6 +32,11 @@ class SharedPreference(context: Context) {
     @SuppressLint("CommitPrefEdits")
     fun getPrefKey(key: String): String? {
         return sharedPreference.getString(key, "data kosong")
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    fun getPrefKeyId(key: String): Int? {
+        return sharedPreference.getInt(key, 0)
     }
 
     @SuppressLint("CommitPrefEdits")
