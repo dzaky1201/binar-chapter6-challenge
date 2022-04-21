@@ -3,7 +3,7 @@ package com.dzakyhdr.moviedb.ui.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dzakyhdr.moviedb.data.model.popular.Result
+import com.dzakyhdr.moviedb.data.remote.model.popular.Result
 import com.dzakyhdr.moviedb.network.ApiClient
 import retrofit2.Call
 import retrofit2.Callback

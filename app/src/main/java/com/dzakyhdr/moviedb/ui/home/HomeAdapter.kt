@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dzakyhdr.moviedb.R
-import com.dzakyhdr.moviedb.data.model.popular.Result
+import com.dzakyhdr.moviedb.data.remote.model.popular.Result
 import com.dzakyhdr.moviedb.databinding.ItemPopularBinding
 import com.dzakyhdr.moviedb.utils.urlImage
 
