@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.dzakyhdr.moviedb.MyApplication
 import com.dzakyhdr.moviedb.R
 import com.dzakyhdr.moviedb.databinding.FragmentDetailBinding
 import com.dzakyhdr.moviedb.utils.urlImage
@@ -22,7 +23,9 @@ class DetailFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: DetailFragmentArgs by navArgs()
 
-    private val viewModel by viewModels<DetailViewModel>()
+    private val viewModel by viewModels<DetailViewModel>{
+        DetailViewModelFactory((activity?.application as MyApplication).repository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -17,9 +17,7 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
 
 
     fun login(email: String, password: String) {
-
-        val executor = Executors.newFixedThreadPool(1)
-        executor.execute {
+        viewModelScope.launch {
             _loginStatus.postValue(Resource.loading(null))
             try {
                 val data = repository.verifyLogin(email, password)
