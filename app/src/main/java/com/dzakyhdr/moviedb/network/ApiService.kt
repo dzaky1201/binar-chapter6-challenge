@@ -5,6 +5,7 @@ import com.dzakyhdr.moviedb.data.remote.model.popular.Result
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -28,6 +29,7 @@ interface ApiService {
 
     companion object {
         private const val TOKEN = "49ee8c89a4ccc0f1da48aee2837c7c15"
+
     }
 }
 
@@ -50,6 +52,7 @@ object ApiClient {
         retrofit.create(ApiService::class.java)
     }
 }
+
 
 object EndPoint {
     const val BASE_URL = "https://api.themoviedb.org/3/"

@@ -3,23 +3,24 @@ package com.dzakyhdr.moviedb.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dzakyhdr.moviedb.data.remote.model.popular.PopularResponse
+import androidx.lifecycle.viewModelScope
+import com.dzakyhdr.moviedb.data.remote.ErrorMovie
+import com.dzakyhdr.moviedb.data.remote.MovieCallback
+import com.dzakyhdr.moviedb.data.remote.MovieRepository
 import com.dzakyhdr.moviedb.data.remote.model.popular.Result
-import com.dzakyhdr.moviedb.network.ApiClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(private val repository: MovieRepository) : ViewModel() {
 
     private var _popular = MutableLiveData<List<Result>>()
     val popular: LiveData<List<Result>> get() = _popular
 
-    private var _errorStatus = MutableLiveData<Boolean>()
-    val errorStatus: LiveData<Boolean> get() = _errorStatus
+    private var _errorStatus = MutableLiveData<String?>()
+    val errorStatus: LiveData<String?> get() = _errorStatus
 
     private var _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
+
 
     init {
         getPopularMovie()
@@ -27,32 +28,27 @@ class HomeViewModel : ViewModel() {
 
 
     fun getPopularMovie() {
-        ApiClient.instance.getPopular().enqueue(object : Callback<PopularResponse> {
-            override fun onResponse(call: Call<PopularResponse>, response: Response<PopularResponse>) {
-                _loading.value = true
-                when {
-                    response.isSuccessful -> {
-                        response.body()?.results?.let {
-                        _loading.value = false
-                        _popular.value = it
-                        _errorStatus.value = false
-                        }
-                    }
-                    response.code() == 401 -> {
-                        _loading.value = false
-                        _errorStatus.value = true
-                    }
-                    response.code() == 404 -> {
-                        _loading.value = false
-                        _errorStatus.value = true
-                    }
+        _loading.value = true
+        try {
+            repository.getPopularMovie(object : MovieCallback {
+                override fun onComplete(result: List<Result>) {
+                    _loading.postValue(false)
+                    _popular.value = result
                 }
-            }
 
-            override fun onFailure(call: Call<PopularResponse>, t: Throwable) {
-                _errorStatus.value = true
-                _loading.value = false
-            }
-        })
+                override fun onFailure(cause: Throwable) {
+                    _loading.postValue(false)
+                    _errorStatus.value = cause.message
+                }
+            })
+        } catch (error: ErrorMovie) {
+            _errorStatus.value = error.message
+        } finally {
+            _loading.value = false
+        }
+    }
+
+    fun onSnackbarShown() {
+        _errorStatus.value = null
     }
 }

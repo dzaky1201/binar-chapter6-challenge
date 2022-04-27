@@ -9,7 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dzakyhdr.moviedb.MyApplication
 import com.dzakyhdr.moviedb.R
+import com.dzakyhdr.moviedb.data.remote.MovieRemoteDataSource
+import com.dzakyhdr.moviedb.data.remote.MovieRepository
 import com.dzakyhdr.moviedb.databinding.FragmentHomeBinding
 import com.dzakyhdr.moviedb.utils.SharedPreference
 import com.google.android.material.snackbar.Snackbar
@@ -20,7 +23,9 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModels<HomeViewModel>()
+    private val viewModel by viewModels<HomeViewModel> {
+        HomeViewModelFactory((activity?.application as MyApplication).repository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,10 +62,12 @@ class HomeFragment : Fragment() {
             Log.d("HomeFragment", it.toString())
         }
 
-        viewModel.errorStatus.observe(viewLifecycleOwner) {
-            if (it) {
-                Snackbar.make(binding.root, "Load Data Gagal", Snackbar.LENGTH_LONG).show()
+        viewModel.errorStatus.observe(viewLifecycleOwner) { text ->
+            text?.let {
+                Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG).show()
+                viewModel.onSnackbarShown()
             }
+
         }
 
         binding.homeToolbar.setOnMenuItemClickListener {
