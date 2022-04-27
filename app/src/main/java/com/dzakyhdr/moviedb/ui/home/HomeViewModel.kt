@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dzakyhdr.moviedb.data.remote.ErrorMovie
-import com.dzakyhdr.moviedb.data.remote.MovieCallback
 import com.dzakyhdr.moviedb.data.remote.MovieRepository
 import com.dzakyhdr.moviedb.data.remote.model.popular.Result
 import kotlinx.coroutines.launch
@@ -28,23 +27,15 @@ class HomeViewModel(private val repository: MovieRepository) : ViewModel() {
 
 
     fun getPopularMovie() {
-        _loading.value = true
-        try {
-            repository.getPopularMovie(object : MovieCallback {
-                override fun onComplete(result: List<Result>) {
-                    _loading.postValue(false)
-                    _popular.value = result
-                }
-
-                override fun onFailure(cause: Throwable) {
-                    _loading.postValue(false)
-                    _errorStatus.value = cause.message
-                }
-            })
-        } catch (error: ErrorMovie) {
-            _errorStatus.value = error.message
-        } finally {
-            _loading.value = false
+        viewModelScope.launch {
+            try {
+                _loading.value = true
+                _popular.value = repository.getPopularMovie()
+            }catch (error: ErrorMovie){
+                _errorStatus.value = error.message
+            }finally {
+                _loading.value = false
+            }
         }
     }
 

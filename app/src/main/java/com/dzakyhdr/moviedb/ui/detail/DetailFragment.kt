@@ -52,6 +52,7 @@ class DetailFragment : Fragment() {
         }
 
 
+
         viewModel.detail.observe(viewLifecycleOwner) { it ->
 
             Glide.with(binding.ivBackdrop)
@@ -79,6 +80,14 @@ class DetailFragment : Fragment() {
                 }else{
                     tvReleaseDate.visibility = View.GONE
                 }
+            }
+
+        }
+
+        viewModel.errorStatus.observe(viewLifecycleOwner) { text ->
+            text?.let {
+                Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG).show()
+                viewModel.onSnackbarShown()
             }
 
         }

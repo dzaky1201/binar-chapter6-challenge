@@ -16,16 +16,16 @@ import java.util.concurrent.TimeUnit
 interface ApiService {
 
     @GET(EndPoint.Popular.urlPopular)
-    fun getPopular(
+    suspend fun getPopular(
         @Query("api_key") api: String = TOKEN,
         @Query("page") page: Int = 1
-    ): Call<PopularResponse>
+    ): Response<PopularResponse>
 
     @GET(EndPoint.Detail.detail)
-    fun getDetail(
+    suspend fun getDetail(
         @Path("movieId") movieId: Int,
         @Query("api_key") api: String = TOKEN
-    ): Call<Result>
+    ): Response<Result>
 
     companion object {
         private const val TOKEN = "49ee8c89a4ccc0f1da48aee2837c7c15"

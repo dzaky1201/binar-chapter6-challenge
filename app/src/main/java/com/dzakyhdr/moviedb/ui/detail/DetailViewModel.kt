@@ -29,24 +29,20 @@ class DetailViewModel(private val repository: MovieRepository) : ViewModel() {
 
 
     fun getDetail(id: Int) {
-        try {
-            _loading.value = true
-            repository.getDetail(id, object : MovieCallbackDetail{
-                override fun onComplete(result: Result) {
-                    _detail.value = result
-                    _loading.value = false
-                }
+      viewModelScope.launch {
+          try {
+              _loading.value = true
+              _detail.value = repository.getDetail(id)
+          } catch (error: ErrorMovie){
+              _errorStatus.value = error.message
+          }finally {
+              _loading.value = false
+          }
+      }
+    }
 
-                override fun onFailure(cause: Throwable) {
-                    _loading.value = false
-                    _errorStatus.value = cause.message
-                }
-            })
-        } catch (error: ErrorMovie){
-            _errorStatus.value = error.message
-        }finally {
-            _loading.value = false
-        }
+    fun onSnackbarShown() {
+        _errorStatus.value = null
     }
 
 
