@@ -5,11 +5,11 @@ import com.dzakyhdr.moviedb.network.ApiClient
 
 class MovieRepository(private val movieRemoteDataSource: MovieRemoteDataSource) {
 
-    fun getPopularMovie(movieCallback: MovieCallback) {
-        movieRemoteDataSource.getMovies(movieCallback)
+    suspend fun getPopularMovie(): List<Result>? {
+        return movieRemoteDataSource.getMovies()
     }
 
-    fun getDetail(id: Int, movieCallbackDetail: MovieCallbackDetail) {
-        movieRemoteDataSource.getDetail(id, movieCallbackDetail)
+    suspend fun getDetail(id: Int): Result {
+        return movieRemoteDataSource.getDetail(id)
     }
 }
