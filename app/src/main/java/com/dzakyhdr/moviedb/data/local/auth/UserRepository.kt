@@ -1,7 +1,6 @@
 package com.dzakyhdr.moviedb.data.local.auth
 
 import android.content.Context
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -28,13 +27,13 @@ class UserRepository(private val userDao: UserDao) {
         }
     }
 
-    suspend fun update(user: User){
-        withContext(Dispatchers.IO){
+    suspend fun update(user: User) {
+        withContext(Dispatchers.IO) {
             userDao.update(user)
         }
     }
 
-    fun verifyLogin(email: String, password: String): User {
+    suspend fun verifyLogin(email: String, password: String): User {
         return userDao.readLogin(email, password)
     }
 }

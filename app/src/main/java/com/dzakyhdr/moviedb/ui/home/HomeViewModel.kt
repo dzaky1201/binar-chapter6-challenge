@@ -1,15 +1,17 @@
 package com.dzakyhdr.moviedb.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.dzakyhdr.moviedb.data.remote.ErrorMovie
 import com.dzakyhdr.moviedb.data.remote.MovieRepository
 import com.dzakyhdr.moviedb.data.remote.model.popular.Result
+import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val repository: MovieRepository) : ViewModel() {
+class HomeViewModel(
+    private val repository: MovieRepository,
+    private val pref: UserDataStoreManager
+    )
+    : ViewModel() {
 
     private var _popular = MutableLiveData<List<Result>>()
     val popular: LiveData<List<Result>> get() = _popular
@@ -41,5 +43,9 @@ class HomeViewModel(private val repository: MovieRepository) : ViewModel() {
 
     fun onSnackbarShown() {
         _errorStatus.value = null
+    }
+
+    fun getUserName(): LiveData<String>{
+        return pref.getUserName().asLiveData()
     }
 }

@@ -19,7 +19,8 @@ class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
         fullname: String,
         ttl: String,
         address: String,
-        password: String
+        password: String,
+        image: String
     ) {
         if (email.isEmpty() || username.isEmpty() || fullname.isEmpty() || ttl.isEmpty() || address.isEmpty() || password.isEmpty()) {
             _saved.value = Event(false)
@@ -32,7 +33,8 @@ class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
             fullname = fullname,
             ttl = ttl,
             address = address,
-            password = password
+            password = password,
+            image = image
         )
 
         viewModelScope.launch {

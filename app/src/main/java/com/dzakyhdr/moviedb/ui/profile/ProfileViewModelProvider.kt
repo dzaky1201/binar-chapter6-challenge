@@ -2,12 +2,13 @@ package com.dzakyhdr.moviedb.ui.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dzakyhdr.moviedb.utils.SharedPreference
+import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 
-class ProfileViewModelProvider (private val sharedPreference: SharedPreference) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+class ProfileViewModelProvider (private val pref: UserDataStoreManager) : ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
-            return ProfileViewModel(sharedPreference) as T
+            return ProfileViewModel(pref) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

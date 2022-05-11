@@ -19,7 +19,7 @@ interface ApiService {
     suspend fun getPopular(
         @Query("api_key") api: String = TOKEN,
         @Query("page") page: Int = 1
-    ): Response<PopularResponse>
+    ): PopularResponse
 
     @GET(EndPoint.Detail.detail)
     suspend fun getDetail(

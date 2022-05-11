@@ -1,16 +1,16 @@
 package com.dzakyhdr.moviedb.ui.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.dzakyhdr.moviedb.data.local.auth.User
 import com.dzakyhdr.moviedb.data.local.auth.UserRepository
 import com.dzakyhdr.moviedb.resource.Resource
+import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import kotlinx.coroutines.launch
-import java.util.concurrent.Executors
 
-class LoginViewModel(private val repository: UserRepository) : ViewModel() {
+class LoginViewModel(
+    private val repository: UserRepository,
+    private val pref: UserDataStoreManager
+) : ViewModel() {
 
     private var _loginStatus = MutableLiveData<Resource<User>>()
     val loginStatus: LiveData<Resource<User>> get() = _loginStatus
@@ -26,6 +26,22 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
                 _loginStatus.postValue(Resource.error(null, exception.message!!))
             }
         }
+    }
+
+    fun saveUserDataStore(user: User) {
+        viewModelScope.launch {
+            pref.saveUser(user)
+        }
+    }
+
+    fun saveStatusDataStore(status: Boolean) {
+        viewModelScope.launch {
+            pref.saveUserStatus(status)
+        }
+    }
+
+    fun getStatus(): LiveData<Boolean>{
+        return pref.getStatus().asLiveData()
     }
 
 }
