@@ -1,22 +1,19 @@
 package com.dzakyhdr.moviedb.ui.login
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.dzakyhdr.moviedb.R
+import com.dzakyhdr.moviedb.data.local.auth.UserRepository
 import com.dzakyhdr.moviedb.databinding.FragmentLoginBinding
 import com.dzakyhdr.moviedb.resource.Status
-import com.dzakyhdr.moviedb.ui.ViewModelFactory
-import com.dzakyhdr.moviedb.ui.register.RegisterViewModel
-import com.dzakyhdr.moviedb.utils.SharedPreference
+import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.runBlocking
-import java.util.concurrent.Executors
 
 
 class LoginFragment : Fragment() {
@@ -24,8 +21,6 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: LoginViewModel
-    private var sharedPref: SharedPreference? = null
-    private var status = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,30 +32,37 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = ViewModelFactory(view.context)
-        viewModel = ViewModelProvider(requireActivity(), factory)[LoginViewModel::class.java]
-        sharedPref = SharedPreference(view.context)
+        val repos = UserRepository.getInstance(view.context)
+        val pref = UserDataStoreManager(view.context)
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            LoginViewModelFactory(repos!!, pref)
+        )[LoginViewModel::class.java]
 
-        status = sharedPref?.getPrefKeyStatus("login_status") == true
-
-        if (status) {
-            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+        viewModel.getStatus().observe(viewLifecycleOwner){ status ->
+            if (status) {
+                binding.loading.visibility = View.GONE
+                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+            } else {
+                binding.loading.visibility = View.GONE
+            }
         }
+
 
         binding.btnLogin.setOnClickListener {
 
-                viewModel.login(
-                    binding.edtEmail.text.toString(),
-                    binding.edtPassword.text.toString()
-                )
+            viewModel.login(
+                binding.edtEmail.text.toString(),
+                binding.edtPassword.text.toString()
+            )
 
 
             viewModel.loginStatus.observe(viewLifecycleOwner) {
                 when (it.status) {
                     Status.SUCCESS -> {
                         if (it.data != null) {
-                            sharedPref?.saveKey(it.data)
-                            sharedPref?.saveKeyState(true)
+                            viewModel.saveUserDataStore(it.data)
+                            viewModel.saveStatusDataStore(true)
                             findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                         } else {
                             Snackbar.make(

@@ -7,7 +7,7 @@ class MovieRemoteDataSource {
 
     suspend fun getMovies(): List<Result>? {
         try {
-             return ApiClient.instance.getPopular().body()?.results
+             return ApiClient.instance.getPopular().results
         }catch (cause: Throwable){
             throw ErrorMovie("Data Gagal Diload", cause)
         }
@@ -24,9 +24,3 @@ class MovieRemoteDataSource {
 }
 
 class ErrorMovie(message: String, cause: Throwable?) : Throwable(message, cause)
-
-
-interface MovieCallbackDetail {
-    fun onComplete(result: Result)
-    fun onFailure(cause: Throwable)
-}

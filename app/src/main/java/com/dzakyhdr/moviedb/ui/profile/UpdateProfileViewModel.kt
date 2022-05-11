@@ -7,38 +7,30 @@ import androidx.lifecycle.viewModelScope
 import com.dzakyhdr.moviedb.data.local.auth.User
 import com.dzakyhdr.moviedb.data.local.auth.UserRepository
 import com.dzakyhdr.moviedb.utils.Event
+import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import kotlinx.coroutines.launch
 
-class UpdateProfileViewModel(private val repository: UserRepository) : ViewModel() {
+class UpdateProfileViewModel(private val repository: UserRepository, private val pref: UserDataStoreManager) : ViewModel() {
     private val _saved = MutableLiveData<Event<Boolean>>()
     val saved: LiveData<Event<Boolean>> get() = _saved
 
-    fun update(
-        id: Int,
-        email: String,
-        username: String,
-        fullname: String,
-        ttl: String,
-        address: String,
-        password: String
+    fun update(user: User
     ) {
-        if (email.isEmpty() || username.isEmpty() || fullname.isEmpty() || ttl.isEmpty() || address.isEmpty() || password.isEmpty()) {
+        if (user.email.isEmpty() || user.username.isEmpty() || user.fullname.isEmpty() || user.ttl.isEmpty() || user.address.isEmpty() || user.password.isEmpty() || user.id == 0 || user.image.isEmpty()) {
             _saved.value = Event(false)
-            return
+        } else {
+            _saved.value = Event(true)
+            viewModelScope.launch {
+                repository.update(user)
+            }
         }
 
-        val user = User(
-            email = email,
-            username = username,
-            fullname = fullname,
-            ttl = ttl,
-            address = address,
-            password = password, id = id
-        )
 
+    }
+
+    fun updateUserDataStore(user: User){
         viewModelScope.launch {
-            repository.update(user)
+            pref.saveUser(user)
         }
-        _saved.value = Event(true)
     }
 }

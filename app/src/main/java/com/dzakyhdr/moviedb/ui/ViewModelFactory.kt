@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dzakyhdr.moviedb.data.local.auth.UserRepository
 
 class ViewModelFactory(private val context: Context): ViewModelProvider.NewInstanceFactory() {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         try {
             return modelClass.getConstructor(UserRepository::class.java)
                 .newInstance(UserRepository.getInstance(context))
