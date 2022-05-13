@@ -1,6 +1,5 @@
 package com.dzakyhdr.moviedb.ui.profile
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -44,15 +43,10 @@ class ProfileViewModel(
         return pref.getUserName().asLiveData()
     }
 
-    fun clearStatusUser() {
-        viewModelScope.launch {
-            pref.saveUserStatus(false)
-        }
-    }
 
     fun clearDataUser() {
         viewModelScope.launch {
-            pref.clearUser()
+            pref.logoutUser()
         }
     }
 

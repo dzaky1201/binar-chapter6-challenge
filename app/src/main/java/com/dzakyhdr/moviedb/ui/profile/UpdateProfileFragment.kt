@@ -139,6 +139,8 @@ class UpdateProfileFragment : Fragment() {
             val id = userData?.id
             val image = saveImageToInternalStorage.toString()
 
+            Log.d("updateImage", image)
+
             val user = User(
                 id = id!!,
                 email = email,
@@ -161,7 +163,8 @@ class UpdateProfileFragment : Fragment() {
                 dialog.setTitle("Update User")
                 dialog.setMessage("Apakah Anda Yakin Ingin Update Data User ?")
                 dialog.setPositiveButton("Yakin") { _, _ ->
-                    Snackbar.make(binding.root, "User Berhasil Diupdate", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(binding.root, "User Berhasil Diupdate", Snackbar.LENGTH_LONG)
+                        .show()
                     findNavController().navigate(R.id.action_updateProfileFragment_to_profileFragment)
                 }
 

@@ -12,7 +12,21 @@ import kotlinx.coroutines.flow.map
 
 class UserDataStoreManager(private val context: Context) {
 
-    suspend fun saveUser(user: User){
+    suspend fun saveUser(user: User, status: Boolean) {
+        context.userDataStore.edit { pref ->
+            pref[STATUS_KEY] = status
+            pref[ID_KEY] = user.id
+            pref[EMAIL_KEY] = user.email
+            pref[PASSWORD_KEY] = user.password
+            pref[ADDRESS_KEY] = user.address
+            pref[FULLNAME_KEY] = user.fullname
+            pref[DATE_KEY] = user.ttl
+            pref[USERNAME_KEY] = user.username
+            pref[IMAGE_KEY] = user.image
+        }
+    }
+
+    suspend fun updateUser(user: User) {
         context.userDataStore.edit { pref ->
             pref[ID_KEY] = user.id
             pref[EMAIL_KEY] = user.email
@@ -25,81 +39,77 @@ class UserDataStoreManager(private val context: Context) {
         }
     }
 
-    suspend fun clearUser(){
+
+    suspend fun logoutUser() {
         context.userDataStore.edit { pref ->
-            pref[ID_KEY] = 0
-            pref[EMAIL_KEY] = ""
-            pref[PASSWORD_KEY] = ""
-            pref[ADDRESS_KEY] = ""
-            pref[FULLNAME_KEY] = ""
-            pref[DATE_KEY] = ""
-            pref[USERNAME_KEY] = ""
-            pref[IMAGE_KEY] = ""
+            pref.remove(STATUS_KEY)
+            pref.remove(ID_KEY)
+            pref.remove(EMAIL_KEY)
+            pref.remove(PASSWORD_KEY)
+            pref.remove(ADDRESS_KEY)
+            pref.remove(FULLNAME_KEY)
+            pref.remove(DATE_KEY)
+            pref.remove(USERNAME_KEY)
+            pref.remove(IMAGE_KEY)
         }
     }
 
-    suspend fun saveUserStatus(status: Boolean){
-        context.userDataStore.edit { pref ->
-            pref[STATUS_KEY] = status
-        }
-    }
-
-    fun getStatus(): Flow<Boolean>{
+    fun getStatus(): Flow<Boolean> {
         return context.userDataStore.data.map { pref ->
             pref[STATUS_KEY] ?: false
         }
     }
 
 
-    fun getEmail(): Flow<String>{
+    fun getEmail(): Flow<String> {
         return context.userDataStore.data.map { pref ->
             pref[EMAIL_KEY] ?: ""
         }
     }
 
-    fun getImage(): Flow<String>{
+    fun getImage(): Flow<String> {
         return context.userDataStore.data.map { pref ->
             pref[IMAGE_KEY] ?: ""
         }
     }
 
-    fun getId(): Flow<Int>{
+    fun getId(): Flow<Int> {
         return context.userDataStore.data.map { pref ->
             pref[ID_KEY] ?: 0
         }
     }
 
-    fun getPassword(): Flow<String>{
+    fun getPassword(): Flow<String> {
         return context.userDataStore.data.map { pref ->
             pref[PASSWORD_KEY] ?: ""
         }
     }
 
-    fun getAddress(): Flow<String>{
+    fun getAddress(): Flow<String> {
         return context.userDataStore.data.map { pref ->
             pref[ADDRESS_KEY] ?: ""
         }
     }
 
-    fun getFullname(): Flow<String>{
+    fun getFullname(): Flow<String> {
         return context.userDataStore.data.map { pref ->
             pref[FULLNAME_KEY] ?: ""
         }
     }
 
-    fun getDate(): Flow<String>{
+    fun getDate(): Flow<String> {
         return context.userDataStore.data.map { pref ->
             pref[DATE_KEY] ?: ""
         }
     }
 
-    fun getUserName(): Flow<String>{
+    fun getUserName(): Flow<String> {
         return context.userDataStore.data.map { pref ->
             pref[USERNAME_KEY] ?: ""
         }
     }
 
-    companion object{
+    companion object {
         private const val DATASTORE_NAME = "user_preference"
         private val EMAIL_KEY = stringPreferencesKey("email_key")
         private val ID_KEY = intPreferencesKey("id_key")

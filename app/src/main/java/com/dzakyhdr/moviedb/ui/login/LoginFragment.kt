@@ -57,12 +57,11 @@ class LoginFragment : Fragment() {
             )
 
 
-            viewModel.loginStatus.observe(viewLifecycleOwner) {
-                when (it.status) {
+            viewModel.loginStatus.observe(viewLifecycleOwner) {user ->
+                when (user.status) {
                     Status.SUCCESS -> {
-                        if (it.data != null) {
-                            viewModel.saveUserDataStore(it.data)
-                            viewModel.saveStatusDataStore(true)
+                        if (user.data != null) {
+                            viewModel.saveUserDataStore(user.data, true)
                             findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                         } else {
                             Snackbar.make(
@@ -74,7 +73,7 @@ class LoginFragment : Fragment() {
                         }
                     }
                     Status.ERROR -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), user.message, Toast.LENGTH_SHORT).show()
                     }
                     else -> {}
                 }

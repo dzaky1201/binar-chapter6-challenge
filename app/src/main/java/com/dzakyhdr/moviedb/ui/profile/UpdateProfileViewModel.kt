@@ -30,7 +30,7 @@ class UpdateProfileViewModel(private val repository: UserRepository, private val
 
     fun updateUserDataStore(user: User){
         viewModelScope.launch {
-            pref.saveUser(user)
+            pref.updateUser(user)
         }
     }
 }
