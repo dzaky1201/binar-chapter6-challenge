@@ -28,17 +28,12 @@ class LoginViewModel(
         }
     }
 
-    fun saveUserDataStore(user: User) {
+    fun saveUserDataStore(user: User, status: Boolean) {
         viewModelScope.launch {
-            pref.saveUser(user)
+            pref.saveUser(user, status)
         }
     }
 
-    fun saveStatusDataStore(status: Boolean) {
-        viewModelScope.launch {
-            pref.saveUserStatus(status)
-        }
-    }
 
     fun getStatus(): LiveData<Boolean>{
         return pref.getStatus().asLiveData()

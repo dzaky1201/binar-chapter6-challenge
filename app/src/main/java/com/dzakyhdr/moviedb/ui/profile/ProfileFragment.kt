@@ -2,10 +2,10 @@ package com.dzakyhdr.moviedb.ui.profile
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -72,6 +72,7 @@ class ProfileFragment : Fragment() {
             }
 
             getImage().observe(viewLifecycleOwner) {
+                Log.d("resultImage", it)
                 user.image = it
                 val uriImage = Uri.parse(it)
                 binding.imgProfile.setImageURI(uriImage)
@@ -89,23 +90,8 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnLogout.setOnClickListener {
-
-            val dialog = AlertDialog.Builder(view.context)
-            dialog.setTitle("Logout")
-            dialog.setMessage("Apakah Anda Yakin Ingin Keluar ?")
-            dialog.setPositiveButton("Keluar") { _, _ ->
-                viewModel.clearStatusUser()
-                viewModel.clearDataUser()
-                findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
-            }
-
-            dialog.setNegativeButton("Batal") { listener, _ ->
-                listener.dismiss()
-            }
-
-
-            dialog.show()
-
+            viewModel.clearDataUser()
+            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
         binding.btnEdit.setOnClickListener {
             findNavController().navigate(

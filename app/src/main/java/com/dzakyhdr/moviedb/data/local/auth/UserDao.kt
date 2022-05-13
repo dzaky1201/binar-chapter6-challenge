@@ -10,12 +10,12 @@ import retrofit2.http.GET
 @Dao
 interface UserDao {
 
-    @Insert
+    @Insert()
     suspend fun insert(user: User)
 
     @Query("SELECT * FROM user WHERE email LIKE :email AND password LIKE :password")
     suspend fun readLogin(email: String, password: String): User
 
-    @Update
+    @Update(onConflict = REPLACE)
     suspend fun update(user: User)
 }
