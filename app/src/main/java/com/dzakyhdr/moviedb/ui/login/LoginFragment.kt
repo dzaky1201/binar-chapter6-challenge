@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.dzakyhdr.moviedb.R
+import com.dzakyhdr.moviedb.data.local.auth.User
 import com.dzakyhdr.moviedb.data.local.auth.UserRepository
 import com.dzakyhdr.moviedb.databinding.FragmentLoginBinding
 import com.dzakyhdr.moviedb.resource.Status
@@ -34,6 +35,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val repos = UserRepository.getInstance(view.context)
         val pref = UserDataStoreManager(view.context)
+
         viewModel = ViewModelProvider(
             requireActivity(),
             LoginViewModelFactory(repos!!, pref)
@@ -48,7 +50,6 @@ class LoginFragment : Fragment() {
             }
         }
 
-
         binding.btnLogin.setOnClickListener {
 
             viewModel.login(
@@ -61,15 +62,14 @@ class LoginFragment : Fragment() {
                 when (user.status) {
                     Status.SUCCESS -> {
                         if (user.data != null) {
-                            viewModel.saveUserDataStore(user.data, true)
+                            viewModel.saveUserDataStore(true, user.data.id)
                             findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                         } else {
                             Snackbar.make(
                                 binding.root,
                                 "User Tidak Ditemukan",
                                 Snackbar.LENGTH_LONG
-                            )
-                                .show()
+                            ).show()
                         }
                     }
                     Status.ERROR -> {

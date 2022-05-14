@@ -28,9 +28,4 @@ class UpdateProfileViewModel(private val repository: UserRepository, private val
 
     }
 
-    fun updateUserDataStore(user: User){
-        viewModelScope.launch {
-            pref.updateUser(user)
-        }
-    }
 }

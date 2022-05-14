@@ -152,7 +152,6 @@ class UpdateProfileFragment : Fragment() {
                 image = image
             )
             viewModel.update(user)
-            viewModel.updateUserDataStore(user)
 
         }
 

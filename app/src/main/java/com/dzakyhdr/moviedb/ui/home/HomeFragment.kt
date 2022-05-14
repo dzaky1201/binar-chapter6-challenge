@@ -5,16 +5,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dzakyhdr.moviedb.MyApplication
 import com.dzakyhdr.moviedb.R
+import com.dzakyhdr.moviedb.data.local.auth.User
 import com.dzakyhdr.moviedb.databinding.FragmentHomeBinding
-import com.dzakyhdr.moviedb.ui.login.LoginViewModel
-import com.dzakyhdr.moviedb.ui.login.LoginViewModelFactory
+import com.dzakyhdr.moviedb.resource.Status
 import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import com.google.android.material.snackbar.Snackbar
 
@@ -36,11 +36,19 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val pref = UserDataStoreManager(view.context)
         viewModel = ViewModelProvider(
             requireActivity(),
-            HomeViewModelFactory((activity?.application as MyApplication).repository, pref)
+            HomeViewModelFactory.getInstance(
+                view.context,
+                (activity?.application as MyApplication).repository,
+                UserDataStoreManager(view.context)
+            )
         )[HomeViewModel::class.java]
+
+        viewModel.getIdUser().observe(viewLifecycleOwner) {
+            viewModel.userData(it)
+        }
+
         val adapter = HomeAdapter()
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -48,10 +56,26 @@ class HomeFragment : Fragment() {
 
         binding.homeToolbar.inflateMenu(R.menu.home_menu)
 
-        viewModel.getUserName().observe(viewLifecycleOwner) { username ->
-            binding.txtUsername.text = getString(R.string.username, username)
+        viewModel.userData.observe(viewLifecycleOwner) { user ->
+            when (user.status) {
+                Status.SUCCESS -> {
+                    if (user.data != null) {
+                        binding.txtUsername.text = getString(R.string.username, user?.data.username)
+                    } else {
+                        Snackbar.make(
+                            binding.root,
+                            "User Tidak Ditemukan",
+                            Snackbar.LENGTH_LONG
+                        )
+                            .show()
+                    }
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(), user.message, Toast.LENGTH_SHORT).show()
+                }
+                else -> {}
+            }
         }
-
 
         viewModel.loading.observe(viewLifecycleOwner) {
             if (it) {
