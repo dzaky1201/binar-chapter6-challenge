@@ -33,6 +33,10 @@ class UserRepository(private val userDao: UserDao) {
         }
     }
 
+    suspend fun getUser(id: Int): User {
+        return userDao.getUser(id)
+    }
+
     suspend fun verifyLogin(email: String, password: String): User {
         return userDao.readLogin(email, password)
     }

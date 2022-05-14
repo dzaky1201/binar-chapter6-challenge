@@ -1,47 +1,25 @@
 package com.dzakyhdr.moviedb.ui.profile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.dzakyhdr.moviedb.data.local.auth.User
+import com.dzakyhdr.moviedb.data.local.auth.UserRepository
+import com.dzakyhdr.moviedb.resource.Resource
 import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val pref: UserDataStoreManager,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
-    fun getIdUsername(): LiveData<Int> {
-        return pref.getId().asLiveData()
-    }
+    private var _errorStatus = MutableLiveData<String?>()
+    val errorStatus: LiveData<String?> get() = _errorStatus
 
-    fun getImage(): LiveData<String> {
-        return pref.getImage().asLiveData()
-    }
+    private var _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> get() = _loading
 
-    fun getPassword(): LiveData<String> {
-        return pref.getPassword().asLiveData()
-    }
-
-    fun getEmailUsername(): LiveData<String> {
-        return pref.getEmail().asLiveData()
-    }
-
-    fun getAddressUsername(): LiveData<String> {
-        return pref.getAddress().asLiveData()
-    }
-
-    fun getFullnameUsername(): LiveData<String> {
-        return pref.getFullname().asLiveData()
-    }
-
-    fun getDateUsername(): LiveData<String> {
-        return pref.getDate().asLiveData()
-    }
-
-    fun getUsernameUsername(): LiveData<String> {
-        return pref.getUserName().asLiveData()
-    }
+    private var _userData = MutableLiveData<Resource<User>>()
+    val userData: LiveData<Resource<User>> get() = _userData
 
 
     fun clearDataUser() {
@@ -49,5 +27,22 @@ class ProfileViewModel(
             pref.logoutUser()
         }
     }
+
+    fun userData(id: Int) {
+        viewModelScope.launch {
+            _userData.postValue(Resource.loading(null))
+            try {
+                val data = userRepository.getUser(id)
+                _userData.postValue(Resource.success(data, 0))
+            } catch (exception: Exception) {
+                _userData.postValue(Resource.error(null, exception.message!!))
+            }
+        }
+    }
+
+    fun getIdUser(): LiveData<Int>{
+        return pref.getId().asLiveData()
+    }
+
 
 }

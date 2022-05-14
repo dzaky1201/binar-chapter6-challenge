@@ -9,4 +9,5 @@ class MyApplication: Application() {
 
     private val movieRemoteDataSource by lazy { MovieRemoteDataSource() }
     val repository by lazy { MovieRepository(movieRemoteDataSource) }
+
 }

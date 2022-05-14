@@ -28,9 +28,9 @@ class LoginViewModel(
         }
     }
 
-    fun saveUserDataStore(user: User, status: Boolean) {
+    fun saveUserDataStore(status: Boolean, id: Int) {
         viewModelScope.launch {
-            pref.saveUser(user, status)
+            pref.saveUser(status, id)
         }
     }
 
