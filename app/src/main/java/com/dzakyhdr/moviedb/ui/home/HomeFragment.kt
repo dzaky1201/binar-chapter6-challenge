@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dzakyhdr.moviedb.MyApplication
 import com.dzakyhdr.moviedb.R
-import com.dzakyhdr.moviedb.data.local.auth.User
 import com.dzakyhdr.moviedb.databinding.FragmentHomeBinding
 import com.dzakyhdr.moviedb.resource.Status
 import com.dzakyhdr.moviedb.utils.UserDataStoreManager
@@ -40,7 +38,6 @@ class HomeFragment : Fragment() {
             requireActivity(),
             HomeViewModelFactory.getInstance(
                 view.context,
-                (activity?.application as MyApplication).repository,
                 UserDataStoreManager(view.context)
             )
         )[HomeViewModel::class.java]
@@ -102,6 +99,10 @@ class HomeFragment : Fragment() {
             when (it.itemId) {
                 R.id.account -> {
                     findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+                    true
+                }
+                R.id.action_favorite -> {
+                    findNavController().navigate(R.id.action_homeFragment_to_favoriteFragment)
                     true
                 }
                 else -> false
