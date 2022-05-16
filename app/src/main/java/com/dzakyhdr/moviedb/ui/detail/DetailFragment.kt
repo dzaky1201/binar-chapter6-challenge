@@ -1,18 +1,18 @@
 package com.dzakyhdr.moviedb.ui.detail
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.dzakyhdr.moviedb.MyApplication
 import com.dzakyhdr.moviedb.R
+import com.dzakyhdr.moviedb.data.local.favorite.MovieEntity
 import com.dzakyhdr.moviedb.databinding.FragmentDetailBinding
 import com.dzakyhdr.moviedb.utils.urlImage
 import com.google.android.material.snackbar.Snackbar
@@ -23,8 +23,8 @@ class DetailFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: DetailFragmentArgs by navArgs()
 
-    private val viewModel by viewModels<DetailViewModel>{
-        DetailViewModelFactory((activity?.application as MyApplication).repository)
+    private val viewModel by viewModels<DetailViewModel> {
+        DetailViewModelFactory.getInstance(requireContext())
     }
 
     override fun onCreateView(
@@ -43,45 +43,80 @@ class DetailFragment : Fragment() {
             it.findNavController().popBackStack()
         }
 
-        viewModel.loading.observe(viewLifecycleOwner){
-            if (it){
+        viewModel.loading.observe(viewLifecycleOwner) {
+            if (it) {
                 binding.loadingContainer.visibility = View.VISIBLE
-            } else{
+            } else {
                 binding.loadingContainer.visibility = View.GONE
             }
         }
 
 
 
-        viewModel.detail.observe(viewLifecycleOwner) { it ->
+        viewModel.detail.observe(viewLifecycleOwner) { movieDetail ->
 
             Glide.with(binding.ivBackdrop)
-                .load(urlImage + it?.backdropPath)
+                .load(urlImage + movieDetail?.backdropPath)
                 .error(R.drawable.ic_broken)
                 .into(binding.ivBackdrop)
 
             Glide.with(binding.ivPoster)
-                .load(urlImage + it?.posterPath)
+                .load(urlImage + movieDetail?.posterPath)
                 .error(R.drawable.ic_broken)
                 .into(binding.ivPoster)
 
             binding.apply {
-                tvTitle.text = it?.title
-                tvVoteCount.text = it?.voteCount.toString()
-                tvOverview.text = it?.overview
-                it?.voteAverage.let {
+                tvTitle.text = movieDetail?.title
+                tvVoteCount.text = movieDetail?.voteCount.toString()
+                tvOverview.text = movieDetail?.overview
+                movieDetail?.voteAverage.let {
                     if (it != null) {
                         rbRating.rating = (it / 2).toFloat()
                     }
                 }
 
-                if (it?.releaseDate != null && it.releaseDate.isNotBlank()){
-                    tvReleaseDate.text = it.releaseDate
-                }else{
+                if (movieDetail?.releaseDate != null && movieDetail.releaseDate.isNotBlank()) {
+                    tvReleaseDate.text = movieDetail.releaseDate
+                } else {
                     tvReleaseDate.visibility = View.GONE
                 }
             }
 
+            val movieEntity = MovieEntity(
+                movieDetail?.id!!,
+                movieDetail.backdropPath,
+                movieDetail.overview,
+                movieDetail.posterPath,
+                movieDetail.releaseDate,
+                movieDetail.title,
+                movieDetail.voteAverage,
+                movieDetail.voteCount
+            )
+
+            viewModel.showUserIsFavorite(movieEntity)
+
+            binding.btnFavorite.setOnClickListener {
+                viewModel.checkFavoriteUser(movieEntity)
+            }
+
+        }
+
+        viewModel.isFavorite.observe(viewLifecycleOwner) { isFavorite ->
+            if (isFavorite) {
+                binding.btnFavorite.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        binding.btnFavorite.context,
+                        R.drawable.ic_favorite_true
+                    )
+                )
+            } else {
+                binding.btnFavorite.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        binding.btnFavorite.context,
+                        R.drawable.ic_favorite_false
+                    )
+                )
+            }
         }
 
         viewModel.errorStatus.observe(viewLifecycleOwner) { text ->

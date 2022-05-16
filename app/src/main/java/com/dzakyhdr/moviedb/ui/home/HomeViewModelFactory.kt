@@ -25,12 +25,11 @@ class HomeViewModelFactory(
         private var instance: HomeViewModelFactory? = null
         fun getInstance(
             context: Context,
-            repository: MovieRepository,
             pref: UserDataStoreManager
         ): HomeViewModelFactory =
             instance ?: synchronized(this) {
                 instance ?: HomeViewModelFactory(
-                    repository,
+                    Injection.provideRepositoryMovie(context),
                     Injection.provideRepositoryUser(context),
                     pref
                 )
