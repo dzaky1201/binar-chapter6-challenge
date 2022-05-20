@@ -27,7 +27,7 @@ class HomeAdapter : ListAdapter<Result, HomeAdapter.ViewHolder>(DiffCallBack()) 
                     .error(R.drawable.ic_broken)
                     .into(binding.ivPoster)
                 root.setOnClickListener {
-                    val id = HomeFragmentDirections.actionHomeFragmentToDetailFragment(dataPopular.id!!)
+                    val id = HomeFragmentDirections.actionHomeFragmentToDetailFragment(dataPopular.id ?: 0)
                     it.findNavController().navigate(id)
                 }
             }

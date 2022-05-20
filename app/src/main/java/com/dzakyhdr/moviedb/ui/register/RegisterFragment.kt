@@ -19,17 +19,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.dzakyhdr.moviedb.R
 import com.dzakyhdr.moviedb.databinding.FragmentRegisterBinding
-import com.dzakyhdr.moviedb.ui.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -42,7 +41,7 @@ class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: RegisterViewModel
+    private val viewModel: RegisterViewModel by viewModel()
     private lateinit var dateListener: DatePickerDialog.OnDateSetListener
     private val calendar = Calendar.getInstance()
     private var saveImageToInternalStorage: Uri? = null
@@ -57,8 +56,6 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = ViewModelFactory(view.context)
-        viewModel = ViewModelProvider(requireActivity(), factory)[RegisterViewModel::class.java]
 
         binding.tvAddImage.setOnClickListener {
             val pictureDialog = AlertDialog.Builder(view.context)

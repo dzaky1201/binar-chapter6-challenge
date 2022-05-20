@@ -15,13 +15,14 @@ import com.dzakyhdr.moviedb.databinding.FragmentHomeBinding
 import com.dzakyhdr.moviedb.resource.Status
 import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel: HomeViewModel by viewModel()
 
 
     override fun onCreateView(
@@ -34,13 +35,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            HomeViewModelFactory.getInstance(
-                view.context,
-                UserDataStoreManager(view.context)
-            )
-        )[HomeViewModel::class.java]
 
         viewModel.getIdUser().observe(viewLifecycleOwner) {
             viewModel.userData(it)

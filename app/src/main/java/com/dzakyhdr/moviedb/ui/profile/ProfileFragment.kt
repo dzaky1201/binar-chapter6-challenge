@@ -17,13 +17,14 @@ import com.dzakyhdr.moviedb.databinding.FragmentProfileBinding
 import com.dzakyhdr.moviedb.resource.Status
 import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: ProfileViewModel
+    private val viewModel: ProfileViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +36,6 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val pref = UserDataStoreManager(view.context)
-        val factory = ProfileViewModelProvider.getInstance(view.context, pref)
-        viewModel = ViewModelProvider(requireActivity(), factory)[ProfileViewModel::class.java]
 
         val userData = User()
 

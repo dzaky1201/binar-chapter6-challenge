@@ -22,4 +22,12 @@
     <style name="Theme.MovieDB.RatingBar">
         <item name="colorControlNormal">#C6C2C2</item>
     </style>
+
+    <style name="Theme.MovieDB.EditTextStyle" parent="android:Widget">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
 </resources>

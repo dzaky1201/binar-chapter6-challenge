@@ -15,13 +15,14 @@ import com.dzakyhdr.moviedb.databinding.FragmentLoginBinding
 import com.dzakyhdr.moviedb.resource.Status
 import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: LoginViewModel
+    private val viewModel: LoginViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,13 +34,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val repos = UserRepository.getInstance(view.context)
-        val pref = UserDataStoreManager(view.context)
-
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            LoginViewModelFactory(repos!!, pref)
-        )[LoginViewModel::class.java]
 
         viewModel.getStatus().observe(viewLifecycleOwner){ status ->
             if (status) {

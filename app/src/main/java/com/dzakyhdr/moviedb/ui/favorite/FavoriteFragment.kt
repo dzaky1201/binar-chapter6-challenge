@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dzakyhdr.moviedb.R
 import com.dzakyhdr.moviedb.databinding.FragmentFavoriteBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class FavoriteFragment : Fragment() {
@@ -18,9 +19,7 @@ class FavoriteFragment : Fragment() {
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: FavoriteViewModel by viewModels {
-        FavoriteViewModelFactory.getInstance(requireContext())
-    }
+    private val viewModel: FavoriteViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

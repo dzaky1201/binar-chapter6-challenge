@@ -1,5 +1,6 @@
 package com.dzakyhdr.moviedb.ui.home
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.dzakyhdr.moviedb.data.local.auth.User
 import com.dzakyhdr.moviedb.data.local.auth.UserRepository
@@ -33,7 +34,7 @@ class HomeViewModel(
     }
 
 
-    fun getPopularMovie() {
+    private fun getPopularMovie() {
         viewModelScope.launch {
             try {
                 _loading.value = true
@@ -52,17 +53,20 @@ class HomeViewModel(
 
     fun userData(id: Int) {
         viewModelScope.launch {
-            _userData.postValue(Resource.loading(null))
+            Log.d("thread", Thread.currentThread().name)
+            _userData.value = Resource.loading(null)
             try {
                 val data = userRepository.getUser(id)
-                _userData.postValue(Resource.success(data, 0))
+                _userData.value = Resource.success(data, 0)
+                Log.d("thread", Thread.currentThread().name)
             } catch (exception: Exception) {
-                _userData.postValue(Resource.error(null, exception.message!!))
+                Log.d("thread", Thread.currentThread().name)
+                _userData.value = Resource.error(null, exception.message!!)
             }
         }
     }
 
-    fun getIdUser(): LiveData<Int>{
+    fun getIdUser(): LiveData<Int> {
         return pref.getId().asLiveData()
     }
 

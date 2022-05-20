@@ -10,7 +10,7 @@ import com.dzakyhdr.moviedb.utils.Event
 import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import kotlinx.coroutines.launch
 
-class UpdateProfileViewModel(private val repository: UserRepository, private val pref: UserDataStoreManager) : ViewModel() {
+class UpdateProfileViewModel(private val repository: UserRepository) : ViewModel() {
     private val _saved = MutableLiveData<Event<Boolean>>()
     val saved: LiveData<Event<Boolean>> get() = _saved
 

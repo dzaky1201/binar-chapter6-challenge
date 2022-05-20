@@ -33,6 +33,7 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -45,7 +46,7 @@ class UpdateProfileFragment : Fragment() {
 
     private var _binding: FragmentUpdateProfileBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: UpdateProfileViewModel
+    private val viewModel: UpdateProfileViewModel by viewModel()
     private lateinit var dateListener: DatePickerDialog.OnDateSetListener
     private val calendar = Calendar.getInstance()
     private var saveImageToInternalStorage: Uri? = null
@@ -66,12 +67,6 @@ class UpdateProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val repos = UserRepository.getInstance(view.context)
-        val pref = UserDataStoreManager(view.context)
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            UpdateViewModelFactory(repos!!, pref)
-        )[UpdateProfileViewModel::class.java]
 
         val userData = arguments?.getParcelable<User>("user")
 

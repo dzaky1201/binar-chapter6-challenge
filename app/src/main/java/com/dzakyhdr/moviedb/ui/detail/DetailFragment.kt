@@ -16,6 +16,7 @@ import com.dzakyhdr.moviedb.data.local.favorite.MovieEntity
 import com.dzakyhdr.moviedb.databinding.FragmentDetailBinding
 import com.dzakyhdr.moviedb.utils.urlImage
 import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailFragment : Fragment() {
 
@@ -23,9 +24,7 @@ class DetailFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: DetailFragmentArgs by navArgs()
 
-    private val viewModel by viewModels<DetailViewModel> {
-        DetailViewModelFactory.getInstance(requireContext())
-    }
+    private val viewModel : DetailViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
