@@ -8,7 +8,7 @@ import com.dzakyhdr.moviedb.ui.home.HomeViewModel
 import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import javax.inject.Inject
 
-class HomeViewModelFactory @Inject constructor(
+class HomeViewModelFactory (
     private val movieRepository: MovieRepository,
     private val userRepository: UserRepository,
     private val pref: UserDataStoreManager

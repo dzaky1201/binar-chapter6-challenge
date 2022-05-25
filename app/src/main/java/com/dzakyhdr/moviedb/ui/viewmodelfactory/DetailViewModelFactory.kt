@@ -6,7 +6,7 @@ import com.dzakyhdr.moviedb.data.remote.MovieRepository
 import com.dzakyhdr.moviedb.ui.detail.DetailViewModel
 import javax.inject.Inject
 
-class DetailViewModelFactory @Inject constructor(private val movieRepository: MovieRepository) :
+class DetailViewModelFactory (private val movieRepository: MovieRepository) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
         when {

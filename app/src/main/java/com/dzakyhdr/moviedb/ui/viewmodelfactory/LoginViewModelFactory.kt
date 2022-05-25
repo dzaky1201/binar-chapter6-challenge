@@ -8,7 +8,7 @@ import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import javax.inject.Inject
 
 
-class LoginViewModelFactory @Inject constructor(
+class LoginViewModelFactory (
     private val userRepository: UserRepository,
     private val pref: UserDataStoreManager
 ) :

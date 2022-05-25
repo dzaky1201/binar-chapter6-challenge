@@ -4,7 +4,7 @@ import com.dzakyhdr.moviedb.data.remote.model.popular.Result
 import com.dzakyhdr.moviedb.network.ApiService
 import javax.inject.Inject
 
-class MovieRemoteDataSource @Inject constructor(private val service: ApiService, private val apiKey: String) {
+class MovieRemoteDataSource(private val service: ApiService, private val apiKey: String) {
 
     suspend fun getMovies(): List<Result>? {
         try {

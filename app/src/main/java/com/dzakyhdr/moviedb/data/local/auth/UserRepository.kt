@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class UserRepository @Inject constructor(private val userDao: UserDao) {
+class UserRepository (private val userDao: UserDao) {
 
     suspend fun save(user: User) {
         withContext(Dispatchers.IO) {

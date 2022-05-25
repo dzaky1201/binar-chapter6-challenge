@@ -5,7 +5,7 @@ import com.dzakyhdr.moviedb.data.local.favorite.MovieEntity
 import com.dzakyhdr.moviedb.data.remote.model.popular.Result
 import javax.inject.Inject
 
-class MovieRepository @Inject constructor(
+class MovieRepository(
     private val movieRemoteDataSource: MovieRemoteDataSource,
     private val localDataSource: MovieLocalDataSource
 ) {

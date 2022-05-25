@@ -7,7 +7,7 @@ import com.dzakyhdr.moviedb.ui.favorite.FavoriteViewModel
 import javax.inject.Inject
 
 
-class FavoriteViewModelFactory @Inject constructor(private val movieRepository: MovieRepository) :
+class FavoriteViewModelFactory (private val movieRepository: MovieRepository) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
         when {

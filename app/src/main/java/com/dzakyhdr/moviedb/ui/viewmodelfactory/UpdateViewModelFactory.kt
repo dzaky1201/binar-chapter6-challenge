@@ -6,7 +6,7 @@ import com.dzakyhdr.moviedb.data.local.auth.UserRepository
 import com.dzakyhdr.moviedb.ui.profile.UpdateProfileViewModel
 import javax.inject.Inject
 
-class UpdateViewModelFactory @Inject constructor(private val userRepository: UserRepository) :
+class UpdateViewModelFactory (private val userRepository: UserRepository) :
     ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
