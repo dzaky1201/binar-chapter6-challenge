@@ -10,9 +10,10 @@ import com.dzakyhdr.moviedb.data.remote.model.popular.Result
 import com.dzakyhdr.moviedb.resource.Resource
 import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(
-    private val repository: MovieRepository,
+class HomeViewModel (
+    private val movieRepository: MovieRepository,
     private val userRepository: UserRepository,
     private val pref: UserDataStoreManager
 ) : ViewModel() {
@@ -38,7 +39,7 @@ class HomeViewModel(
         viewModelScope.launch {
             try {
                 _loading.value = true
-                _popular.value = repository.getPopularMovie()
+                _popular.value = movieRepository.getPopularMovie()
             } catch (error: ErrorMovie) {
                 _errorStatus.value = error.message
             } finally {

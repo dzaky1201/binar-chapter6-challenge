@@ -17,45 +17,21 @@ interface ApiService {
 
     @GET(EndPoint.Popular.urlPopular)
     suspend fun getPopular(
-        @Query("api_key") api: String = TOKEN,
+        @Query("api_key") api: String,
         @Query("page") page: Int = 1
     ): PopularResponse
 
     @GET(EndPoint.Detail.detail)
     suspend fun getDetail(
         @Path("movieId") movieId: Int,
-        @Query("api_key") api: String = TOKEN
+        @Query("api_key") api: String
     ): Response<Result>
 
-    companion object {
-        private const val TOKEN = "49ee8c89a4ccc0f1da48aee2837c7c15"
-
-    }
 }
 
-object ApiClient {
-    private val logging = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-
-    private val client = OkHttpClient.Builder()
-        .addInterceptor(logging)
-        .readTimeout(30, TimeUnit.SECONDS)
-        .build()
-
-    val instance: ApiService by lazy {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(EndPoint.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
-            .build()
-        retrofit.create(ApiService::class.java)
-    }
-}
 
 
 object EndPoint {
-    const val BASE_URL = "https://api.themoviedb.org/3/"
 
     object Popular {
         const val urlPopular = "movie/popular"

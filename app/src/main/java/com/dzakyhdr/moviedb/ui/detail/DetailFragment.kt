@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,9 +13,11 @@ import com.bumptech.glide.Glide
 import com.dzakyhdr.moviedb.R
 import com.dzakyhdr.moviedb.data.local.favorite.MovieEntity
 import com.dzakyhdr.moviedb.databinding.FragmentDetailBinding
+import com.dzakyhdr.moviedb.di.Injector
+import com.dzakyhdr.moviedb.ui.viewmodelfactory.DetailViewModelFactory
 import com.dzakyhdr.moviedb.utils.urlImage
 import com.google.android.material.snackbar.Snackbar
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 
 class DetailFragment : Fragment() {
 
@@ -24,7 +25,12 @@ class DetailFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: DetailFragmentArgs by navArgs()
 
-    private val viewModel : DetailViewModel by viewModel()
+    @Inject
+    lateinit var detailViewModelFactory: DetailViewModelFactory
+
+    private val viewModel: DetailViewModel by viewModels {
+        detailViewModelFactory
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +42,7 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity?.application as Injector).createDetailSubComponent().inject(this)
         viewModel.getDetail(args.movieId)
 
         binding.ivBack.setOnClickListener {

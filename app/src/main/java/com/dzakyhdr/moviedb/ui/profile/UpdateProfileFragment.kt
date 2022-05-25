@@ -19,6 +19,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -26,6 +27,8 @@ import com.dzakyhdr.moviedb.R
 import com.dzakyhdr.moviedb.data.local.auth.User
 import com.dzakyhdr.moviedb.data.local.auth.UserRepository
 import com.dzakyhdr.moviedb.databinding.FragmentUpdateProfileBinding
+import com.dzakyhdr.moviedb.di.Injector
+import com.dzakyhdr.moviedb.ui.viewmodelfactory.UpdateViewModelFactory
 import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import com.google.android.material.snackbar.Snackbar
 import com.karumi.dexter.Dexter
@@ -33,20 +36,24 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 
 class UpdateProfileFragment : Fragment() {
 
     private var _binding: FragmentUpdateProfileBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: UpdateProfileViewModel by viewModel()
+    @Inject
+    lateinit var updateViewModelFactory: UpdateViewModelFactory
+    private val viewModel: UpdateProfileViewModel by viewModels{
+        updateViewModelFactory
+    }
     private lateinit var dateListener: DatePickerDialog.OnDateSetListener
     private val calendar = Calendar.getInstance()
     private var saveImageToInternalStorage: Uri? = null
@@ -67,6 +74,7 @@ class UpdateProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity?.application as Injector).createUpdateSubComponent().inject(this)
 
         val userData = arguments?.getParcelable<User>("user")
 

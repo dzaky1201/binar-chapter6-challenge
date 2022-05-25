@@ -7,8 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.dzakyhdr.moviedb.data.local.favorite.MovieEntity
 import com.dzakyhdr.moviedb.data.remote.MovieRepository
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FavoriteViewModel(private val repository: MovieRepository) : ViewModel() {
+class FavoriteViewModel (private val repository: MovieRepository) : ViewModel() {
 
     private var _getListFavorite = MutableLiveData<List<MovieEntity>>()
     val getListFavorite: LiveData<List<MovieEntity>> get() = _getListFavorite

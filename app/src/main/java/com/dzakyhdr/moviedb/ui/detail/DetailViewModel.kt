@@ -9,8 +9,9 @@ import com.dzakyhdr.moviedb.data.remote.ErrorMovie
 import com.dzakyhdr.moviedb.data.remote.MovieRepository
 import com.dzakyhdr.moviedb.data.remote.model.popular.Result
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DetailViewModel(private val repository: MovieRepository) : ViewModel() {
+class DetailViewModel (private val repository: MovieRepository) : ViewModel() {
 
     private var _detail = MutableLiveData<Result?>()
     val detail: LiveData<Result?> get() = _detail

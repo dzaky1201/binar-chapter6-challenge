@@ -1,11 +1,11 @@
 package com.dzakyhdr.moviedb.data.remote
 
-import androidx.lifecycle.LiveData
 import com.dzakyhdr.moviedb.data.local.MovieLocalDataSource
 import com.dzakyhdr.moviedb.data.local.favorite.MovieEntity
 import com.dzakyhdr.moviedb.data.remote.model.popular.Result
+import javax.inject.Inject
 
-class MovieRepository(
+class MovieRepository @Inject constructor(
     private val movieRemoteDataSource: MovieRemoteDataSource,
     private val localDataSource: MovieLocalDataSource
 ) {

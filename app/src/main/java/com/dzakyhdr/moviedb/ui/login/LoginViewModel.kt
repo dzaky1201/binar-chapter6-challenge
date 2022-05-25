@@ -6,8 +6,9 @@ import com.dzakyhdr.moviedb.data.local.auth.UserRepository
 import com.dzakyhdr.moviedb.resource.Resource
 import com.dzakyhdr.moviedb.utils.UserDataStoreManager
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(
+class LoginViewModel (
     private val repository: UserRepository,
     private val pref: UserDataStoreManager
 ) : ViewModel() {
