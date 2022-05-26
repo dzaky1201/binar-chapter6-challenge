@@ -8,9 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dzakyhdr.moviedb.MainActivity
 import com.dzakyhdr.moviedb.databinding.FragmentFavoriteBinding
-import com.dzakyhdr.moviedb.di.Injector
 import com.dzakyhdr.moviedb.ui.viewmodelfactory.FavoriteViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 
@@ -18,13 +19,7 @@ class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
-
-    @Inject
-    lateinit var favoriteViewModelFactory: FavoriteViewModelFactory
-
-    private val viewModel: FavoriteViewModel by viewModels {
-        favoriteViewModelFactory
-    }
+    private lateinit var viewModel: FavoriteViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +31,7 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity?.application as Injector).createFavoriteSubComponent().inject(this)
+        viewModel = (activity as MainActivity).favoriteViewModel
 
         viewModel.getUser()
 

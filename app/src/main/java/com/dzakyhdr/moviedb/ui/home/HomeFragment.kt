@@ -10,12 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dzakyhdr.moviedb.MainActivity
 import com.dzakyhdr.moviedb.R
 import com.dzakyhdr.moviedb.databinding.FragmentHomeBinding
-import com.dzakyhdr.moviedb.di.Injector
 import com.dzakyhdr.moviedb.resource.Status
 import com.dzakyhdr.moviedb.ui.viewmodelfactory.HomeViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 
@@ -23,12 +24,7 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    @Inject
-    lateinit var homeViewModelFactory: HomeViewModelFactory
-
-    private val viewModel: HomeViewModel by viewModels{
-        homeViewModelFactory
-    }
+    private lateinit var viewModel: HomeViewModel
 
 
     override fun onCreateView(
@@ -41,7 +37,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity?.application as Injector).createHomeSubComponent().inject(this)
+        viewModel = (activity as MainActivity).homeViewModel
 
         viewModel.getIdUser().observe(viewLifecycleOwner) {
             viewModel.userData(it)

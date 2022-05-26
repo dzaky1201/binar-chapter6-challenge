@@ -4,9 +4,7 @@ import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.dzakyhdr.moviedb.data.local.auth.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -32,8 +30,6 @@ class UserDataStoreManager(private val context: Context) {
             pref[STATUS_KEY] ?: false
         }
     }
-
-
 
 
     fun getId(): Flow<Int> {

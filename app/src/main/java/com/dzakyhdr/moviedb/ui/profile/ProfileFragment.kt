@@ -11,13 +11,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.dzakyhdr.moviedb.MainActivity
 import com.dzakyhdr.moviedb.R
 import com.dzakyhdr.moviedb.data.local.auth.User
 import com.dzakyhdr.moviedb.databinding.FragmentProfileBinding
-import com.dzakyhdr.moviedb.di.Injector
 import com.dzakyhdr.moviedb.resource.Status
 import com.dzakyhdr.moviedb.ui.viewmodelfactory.ProfileViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 
@@ -25,11 +26,7 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    @Inject
-    lateinit var profileViewModelFactory: ProfileViewModelFactory
-    private val viewModel: ProfileViewModel by viewModels{
-        profileViewModelFactory
-    }
+    private lateinit var viewModel: ProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +38,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity?.application as Injector).createProfilenSubComponent().inject(this)
+        viewModel = (activity as MainActivity).profileViewModel
 
         val userData = User()
 

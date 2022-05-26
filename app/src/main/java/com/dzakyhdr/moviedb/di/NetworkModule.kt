@@ -1,8 +1,11 @@
 package com.dzakyhdr.moviedb.di
 
+import com.dzakyhdr.moviedb.BuildConfig
 import com.dzakyhdr.moviedb.network.ApiService
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -12,7 +15,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-class NetworkModule(private val baseUrl: String) {
+@InstallIn(ApplicationComponent::class)
+class NetworkModule {
 
     @Singleton
     @Provides
@@ -40,7 +44,7 @@ class NetworkModule(private val baseUrl: String) {
     ): Retrofit{
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(baseUrl)
+            .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
             .build()
     }

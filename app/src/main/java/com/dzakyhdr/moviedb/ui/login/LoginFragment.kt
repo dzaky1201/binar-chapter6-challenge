@@ -6,28 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.dzakyhdr.moviedb.MainActivity
 import com.dzakyhdr.moviedb.R
 import com.dzakyhdr.moviedb.databinding.FragmentLoginBinding
-import com.dzakyhdr.moviedb.di.Injector
 import com.dzakyhdr.moviedb.resource.Status
-import com.dzakyhdr.moviedb.ui.viewmodelfactory.LoginViewModelFactory
 import com.google.android.material.snackbar.Snackbar
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 
 class LoginFragment : Fragment() {
 
-    @Inject
-    lateinit var loginViewModelFactory: LoginViewModelFactory
-
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-
-    private val viewModel: LoginViewModel by viewModels{
-        loginViewModelFactory
-    }
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +31,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity?.application as Injector).createLoginSubComponent().inject(this)
+        viewModel = (activity as MainActivity).loginViewModel
 
         viewModel.getStatus().observe(viewLifecycleOwner){ status ->
             if (status) {

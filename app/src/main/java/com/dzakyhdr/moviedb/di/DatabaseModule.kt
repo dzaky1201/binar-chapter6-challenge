@@ -7,14 +7,19 @@ import com.dzakyhdr.moviedb.data.local.auth.UserDao
 import com.dzakyhdr.moviedb.data.local.favorite.MovieDao
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
 @Module
+@InstallIn(ApplicationComponent::class)
 class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideMovieDatabase(context: Context): MovieDatabase {
+    fun provideMovieDatabase(@ApplicationContext context: Context): MovieDatabase {
         return Room.databaseBuilder(context, MovieDatabase::class.java, "movie").build()
     }
 
